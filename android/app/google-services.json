@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1068413805267",
+    "project_id": "tfrb-2c136",
+    "storage_bucket": "tfrb-2c136.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068413805267:android:eb3d4e65e9c3bb7feaea26",
+        "android_client_info": {
+          "package_name": "com.tfrb.utem.tfrb_managerside"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh749uSZepwMPQEQfQk9gmIdha-dy_Qkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068413805267:android:4552485404d593e2eaea26",
+        "android_client_info": {
+          "package_name": "com.tfrb.utem.tfrb_userside"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh749uSZepwMPQEQfQk9gmIdha-dy_Qkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
