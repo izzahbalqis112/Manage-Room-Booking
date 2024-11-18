@@ -19,11 +19,10 @@ class FirstPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            //TF logo
             Align(
-              alignment: Alignment.topCenter, // Align the logo to the top center
+              alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsets.only(top: 150, bottom: 20), // Adjust the top padding for positioning
+                padding: const EdgeInsets.only(top: 150, bottom: 20),
                 child: Image.asset(
                   'lib/assets/img/TF-logo.png',
                   width: 150,
@@ -49,7 +48,7 @@ class FirstPage extends StatelessWidget {
                 ),
                 const SizedBox(
                     height:
-                    10), // Adjust the space between "Teaching Factory" and the new text
+                    10), 
                 Text(
                   "The Learning Organization",
                   style: TextStyle(
@@ -60,7 +59,7 @@ class FirstPage extends StatelessWidget {
                 ),
                 const SizedBox(
                     height:
-                    240), //
+                    240),
               ],
             ),
             ElevatedButton(
@@ -75,14 +74,14 @@ class FirstPage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(
-                    vertical: 16, horizontal: 104), // Adjust padding for size
+                    vertical: 16, horizontal: 104), 
                 shape: RoundedRectangleBorder(
                   borderRadius:
-                  BorderRadius.circular(44), // Adjust border radius
+                  BorderRadius.circular(44),
                   side: BorderSide(
-                      color: Colors.white, width: 2), // Border color and width
+                      color: Colors.white, width: 2), 
                 ),
-                elevation: 5, //shadow
+                elevation: 5, 
               ),
               child: Text(
                 "Log in",
