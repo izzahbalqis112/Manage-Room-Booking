@@ -21,7 +21,6 @@ class UserModel {
     required this.phoneNumber,
   });
 
-  // Factory constructor to create a UserModel from Firestore DocumentSnapshot
   factory UserModel.fromDocument(DocumentSnapshot<Map<String, dynamic>> doc) {
     var data = doc.data()!;
     return UserModel(
@@ -36,7 +35,6 @@ class UserModel {
     );
   }
 
-  // Factory constructor to create a UserModel from a JSON map
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       userID: json['userID'] as String,
@@ -50,7 +48,6 @@ class UserModel {
     );
   }
 
-  // Convert UserModel instance to a JSON map
   Map<String, dynamic> toJson() {
     return {
       'userID': userID,
