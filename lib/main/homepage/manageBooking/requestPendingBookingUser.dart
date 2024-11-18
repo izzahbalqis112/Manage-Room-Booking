@@ -40,9 +40,9 @@ class _RequestPendingBookingPageState extends State<RequestPendingBookingPage> w
           "Manage User Rooms Booking",
           style: TextStyle(
             color: shadeColor6,
-            fontWeight: FontWeight.bold, // Making the text bold
+            fontWeight: FontWeight.bold, 
           ),
-          textAlign: TextAlign.center, // Centering the text
+          textAlign: TextAlign.center,
         ),
         centerTitle: true,
         elevation: 0,
