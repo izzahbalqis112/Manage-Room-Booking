@@ -12,11 +12,11 @@ enum PaymentStatus {
 class PaymentMethodModel {
   final String paymentID;
   final UserModel user;
-  final RoomBookingModel roomBooking; // booking id
+  final RoomBookingModel roomBooking; 
   final dynamic payment;
-  final dynamic paymentType; //integrate with API
-  final DateTime expirationTime; //give 30 minutes to complete the payment
-  final PaymentStatus paymentStatus; //e.g., pending, completed, failed, refunded
+  final dynamic paymentType; 
+  final DateTime expirationTime;
+  final PaymentStatus paymentStatus; 
 
   PaymentMethodModel({
     required this.paymentID,
@@ -65,12 +65,10 @@ class PaymentMethodModel {
     };
   }
 
-  // Method to set expiration time to 30 minutes from now
   static DateTime calculateExpirationTime() {
     return DateTime.now().add(Duration(minutes: 30));
   }
 
-  // Method to parse payment status string to enum
   static PaymentStatus _parsePaymentStatus(String status) {
     switch (status) {
       case 'pending':
