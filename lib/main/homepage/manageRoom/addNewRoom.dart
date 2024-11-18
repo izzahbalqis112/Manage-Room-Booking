@@ -69,7 +69,7 @@ class _AddNewRoomDataPageState extends State<AddNewRoomDataPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        List<String> selectedFacilities = List.from(roomFacilities); // Make a copy of current room facilities
+        List<String> selectedFacilities = List.from(roomFacilities);
 
         return StatefulBuilder(
           builder: (context, setState) {
@@ -104,8 +104,8 @@ class _AddNewRoomDataPageState extends State<AddNewRoomDataPage> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      roomFacilities = List.from(selectedFacilities); // Update room facilities with selected facilities
-                      _roomFacilitiesController.text = roomFacilities.join(', '); // Update the text field with selected facilities
+                      roomFacilities = List.from(selectedFacilities); 
+                      _roomFacilitiesController.text = roomFacilities.join(', ');
                     });
                     Navigator.of(context).pop();
                   },
@@ -128,7 +128,6 @@ class _AddNewRoomDataPageState extends State<AddNewRoomDataPage> {
         });
       }
     } catch (e) {
-      // Handle errors here
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to pick image: $e'),
@@ -173,16 +172,15 @@ class _AddNewRoomDataPageState extends State<AddNewRoomDataPage> {
               (status) => status.roomStatus == _selectedRoomStatus,
           orElse: () => RoomStatusModel(
             roomStatusID: '',
-            roomStatus: _selectedRoomStatus!, // Set the room status directly
+            roomStatus: _selectedRoomStatus!, 
             sortOrder: 0,
-            active: false, // Set active to false by default
+            active: false,
           ),
         );
       }
 
       List<String> roomFacilitiesList = _roomFacilitiesController.text.split(', ');
 
-      // Parse capacity from text to integer
       int capacity = int.tryParse(_capacityController.text) ?? 0;
 
       double roomPrice = double.tryParse(_roomPriceController.text.trim().substring(2)) ?? 0.0;
@@ -195,16 +193,15 @@ class _AddNewRoomDataPageState extends State<AddNewRoomDataPage> {
         capacity: capacity,
         roomStatus: selectedRoomStatusModel ?? RoomStatusModel(
           roomStatusID: '',
-          roomStatus: '', // Set the room status directly
+          roomStatus: '', 
           sortOrder: 0,
-          active: false, // Set active to false by default
+          active: false, 
         ),
         roomFacilities: roomFacilitiesList,
         roomArea: double.tryParse(_roomAreaController.text.trim()) ?? 0.0,
-        roomPrice: roomPrice, // Store the price as a double
+        roomPrice: roomPrice, 
       );
 
-      // Format the room price
       String formattedRoomPrice = 'RM ' + roomPrice.toStringAsFixed(2);
 
       Map<String, dynamic> roomsData = {
@@ -214,7 +211,7 @@ class _AddNewRoomDataPageState extends State<AddNewRoomDataPage> {
         'about': roomsModel.about,
         'capacity': roomsModel.capacity,
         'roomStatus': roomsModel.roomStatus.roomStatus,
-        'roomPrice': formattedRoomPrice, // Save the formatted room price
+        'roomPrice': formattedRoomPrice,
         'roomFacilities': roomsModel.roomFacilities,
         'roomArea': roomsModel.roomArea,
         'images': roomsModel.images,
@@ -223,7 +220,6 @@ class _AddNewRoomDataPageState extends State<AddNewRoomDataPage> {
       await _firestore.collection('roomsData').doc(roomsModel.roomID).set(roomsData);
 
       widget.onSaveComplete();
-      // Navigate back
       Navigator.pop(context, true);
     } catch (e) {
       _showErrorMessage('Failed to save journal entry: $e');
@@ -259,16 +255,11 @@ class _AddNewRoomDataPageState extends State<AddNewRoomDataPage> {
   void _calculateRoomPrice() {
     String? roomAreaText = _roomAreaController.text.trim();
     if (roomAreaText.isNotEmpty) {
-      // Parse room area to double
       double roomArea = double.tryParse(roomAreaText) ?? 0.0;
-      // Calculate room price
-      double roomPrice = roomArea * pricePerSquareMeter; // Use the provided price per square meter
-      // Round the room price to two decimal places
+      double roomPrice = roomArea * pricePerSquareMeter;
       roomPrice = double.parse(roomPrice.toStringAsFixed(2));
-      // Update room price controller with formatted price
       _roomPriceController.text = 'RM${roomPrice.toStringAsFixed(2)}';
     } else {
-      // If room area is empty, clear room price
       _roomPriceController.clear();
     }
   }
