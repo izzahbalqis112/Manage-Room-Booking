@@ -22,7 +22,6 @@ class _ProcessBeforeFinalizedBookingPageState extends State<ProcessBeforeFinaliz
   }
 
   Future<List<DocumentSnapshot>> _fetchProcessBeforeFinalizedBookings() async {
-    // Query Firestore for pending bookings
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('roomBookingData')
         .where('bookingStatus.status', isEqualTo: 'Processing')
@@ -38,8 +37,7 @@ class _ProcessBeforeFinalizedBookingPageState extends State<ProcessBeforeFinaliz
           .doc(bookingId)
           .get();
 
-      // Extract booking details from the snapshot
-      Map<String, dynamic> bookingData = bookingSnapshot.data() as Map<String, dynamic>; // Cast to Map<String, dynamic>
+      Map<String, dynamic> bookingData = bookingSnapshot.data() as Map<String, dynamic>; 
       String displayBookingID = bookingData['displayBookingID'] ?? '';
 
       await FirebaseFirestore.instance
@@ -53,7 +51,6 @@ class _ProcessBeforeFinalizedBookingPageState extends State<ProcessBeforeFinaliz
         'bookingStatus.active': 'true',
       });
 
-      // Reload the page
       setState(() {
         _ProcessBeforeFinalizedBookingsFuture = _fetchProcessBeforeFinalizedBookings();
       });
@@ -62,19 +59,17 @@ class _ProcessBeforeFinalizedBookingPageState extends State<ProcessBeforeFinaliz
       String userEmail = bookingData['user']['email'] ?? '';
 
       if (isBookingUpdate) {
-        // Save notification data to Firestore
         await _firestore.collection('notifications').add({
           'title': 'Teaching Factory',
           'body': 'Room booking request $displayBookingID has been complete!',
           'payload': 'completed_booking',
-          'userEmail': userEmail, //based on selected booking id details data user email
-          'displayBookingID': displayBookingID, ////based on selected booking id details data
+          'userEmail': userEmail,
+          'displayBookingID': displayBookingID, 
         });
       }
 
     } catch (error) {
       print('Error updating booking status: $error');
-      // Handle error
     }
   }
 
@@ -101,7 +96,7 @@ class _ProcessBeforeFinalizedBookingPageState extends State<ProcessBeforeFinaliz
                     SingleChildScrollView(
                       child: ContainerWidget(
                         booking: booking,
-                        onUpdateStatus: _updateBookingStatus, // Pass the callback function
+                        onUpdateStatus: _updateBookingStatus, 
                       ),
                     ),
                     SizedBox(height: 10),
@@ -128,25 +123,19 @@ class ContainerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Extract data from the booking document
     var displayBookingID = booking['displayBookingID'] ?? '';
     var roomName = booking['room']['name'] ?? '';
     var pendingStatus = booking['bookingStatus']['status'] ?? '';
     var totalPrice = booking['totalBookingPrice'] ?? 0;
     var checkInDate = DateTime.parse(booking['checkInDateTime'] as String).toLocal();
     var checkOutDate = DateTime.parse(booking['checkOutDateTime'] as String).toLocal();
-
     var checkInDateNoTime = DateTime(checkInDate.year, checkInDate.month, checkInDate.day);
     var checkOutDateNoTime = DateTime(checkOutDate.year, checkOutDate.month, checkOutDate.day);
-
     var numberOfDays = checkOutDateNoTime.difference(checkInDateNoTime).inDays;
-
-
     List<dynamic> roomImages = booking['room']['images'] ?? [];
     DecorationImage? backgroundImage;
 
     if (roomImages.isNotEmpty) {
-      // Assuming you want to use the first image in the list
       String imageUrl = roomImages[0];
       backgroundImage = DecorationImage(
         image: CachedNetworkImageProvider(imageUrl),
@@ -241,7 +230,7 @@ class ContainerWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$numberOfDays days', //no of days based on check-in date & check-out date
+                  '$numberOfDays days', 
                   style: TextStyle(
                     fontSize: 14,
                     color: shadeColor5,
@@ -272,18 +261,17 @@ class ContainerWidget extends StatelessWidget {
             left: 130,
             child: TextButton(
               onPressed: () {
-                // Navigate to ViewMoreSelectedBookingIDDetailsPage
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ViewMoreSelectedBookingIDDetailsPage(
-                      bookingId: booking.id, // Pass the booking ID
+                      bookingId: booking.id, 
                     ),
                   ),
                 );
               },
               child: Text(
-                'View Booking Details >', //click text button and go to the view selected booking details
+                'View Booking Details >', 
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -294,20 +282,19 @@ class ContainerWidget extends StatelessWidget {
           ),
           Positioned(
             top: 196,
-            child: TextButton( // Use TextButton for button appearance
+            child: TextButton( 
               onPressed: () {
-                // Navigate to PDFViewerPage based on selected booking id
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => PDFViewerPage(
-                      bookingId: booking.id, // Pass the booking ID
+                      bookingId: booking.id, 
                     ),
                   ),
                 );
               },
               child: Text(
-                'View Payment Details >', //click text button and go to the view selected booking details
+                'View Payment Details >',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -356,8 +343,8 @@ class HorizontalLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 1.0, // Height is 1.0 for a horizontal line
-      width: width, // Adjust the width of the line as needed
+      height: 1.0, 
+      width: width, 
       color: color,
     );
   }
