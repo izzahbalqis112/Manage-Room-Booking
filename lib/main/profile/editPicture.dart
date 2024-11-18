@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
-import 'package:firebase_storage/firebase_storage.dart'; // Import Firebase Storage
+import 'package:firebase_auth/firebase_auth.dart'; 
+import 'package:firebase_storage/firebase_storage.dart'; 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../Assets/Colors.dart'; // Import Cloud Firestore
+import '../../Assets/Colors.dart';
 
 class EditPicture extends StatefulWidget {
   @override
@@ -32,7 +32,6 @@ class _EditPictureState extends State<EditPicture> {
       setState(() {
         _currentUser = currentUser;
       });
-      // Fetch the user's current profile picture URL from Firestore
       await fetchUserProfilePhoto(currentUser.uid);
     }
   }
@@ -45,10 +44,7 @@ class _EditPictureState extends State<EditPicture> {
           .get();
 
       if (userDataSnapshot.exists) {
-        // Cast the data to Map<String, dynamic>
         Map<String, dynamic> userData = userDataSnapshot.data() as Map<String, dynamic>;
-
-        // Check if the 'picture' field exists and is not empty
         if (userData['picture'] != null && userData['picture'] != '') {
           setState(() {
             _photoUrl = userData['picture'];
@@ -149,7 +145,7 @@ class _EditPictureState extends State<EditPicture> {
                         44),
                     side: BorderSide(
                         color: shadeColor2,
-                        width: 2), // Border color and width
+                        width: 2), 
                   ),
                 ),
                 child: Text(
@@ -175,13 +171,12 @@ class _EditPictureState extends State<EditPicture> {
     if (pickedImage != null) {
       setState(() {
         _selectedImage = File(pickedImage.path);
-        _uploadUserProfilePhoto(); // Upload the selected image
+        _uploadUserProfilePhoto(); 
       });
     }
   }
 
   Future<String> _uploadUserProfilePhoto() async {
-    // Ensure that the current user is authenticated
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser == null || _selectedImage == null) {
       throw Exception("No authenticated user found or image not selected");
@@ -189,9 +184,9 @@ class _EditPictureState extends State<EditPicture> {
 
     final Reference storageRef = FirebaseStorage.instance
         .ref()
-        .child('managerProfilePhotos') // The directory name in Firebase Storage
-        .child(currentUser.uid) // The user's UID
-        .child('${currentUser.uid}.jpg'); // The image file name
+        .child('managerProfilePhotos') 
+        .child(currentUser.uid) 
+        .child('${currentUser.uid}.jpg'); 
 
     final UploadTask uploadTask = storageRef.putFile(_selectedImage!);
 
@@ -204,7 +199,7 @@ class _EditPictureState extends State<EditPicture> {
 
     setState(() {
       _isUploading = false;
-      _photoUrl = downloadUrl; // Update _photoUrl with the download URL
+      _photoUrl = downloadUrl; 
     });
 
     return downloadUrl;
@@ -215,24 +210,18 @@ class _EditPictureState extends State<EditPicture> {
       String? userEmail = _currentUser.email;
 
       if (userEmail != null) {
-        // Query the user document based on the email
         QuerySnapshot userQuerySnapshot = await FirebaseFirestore.instance
             .collection('managersAccount')
             .where('email', isEqualTo: userEmail)
             .limit(1)
             .get();
 
-        // Check if the user document exists
         if (userQuerySnapshot.docs.isNotEmpty) {
-          // Get the user document reference
           DocumentReference userDocRef = userQuerySnapshot.docs.first.reference;
-
-          // Update user profile data in Firestore
           await userDocRef.update({
-            'picture': _photoUrl, // Update 'picture' field with _photoUrl
-          });
+            'picture': _photoUrl, 
+          })
 
-          // Show success message to the user
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Picture updated successfully.'),
