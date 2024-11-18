@@ -51,48 +51,46 @@ class RoomStatusModel {
   }
 }
 
-// List of room status details
 List<Map<String, dynamic>> roomStatusJson = [
   {
     'roomStatusID': 'rs001',
-    'roomStatus': 'Available', //The room is vacant and can be booked.
+    'roomStatus': 'Available', 
     'sortOrder': 1,
     'active': true,
   },
   {
     'roomStatusID': 'rs002',
-    'roomStatus': 'Occupied', //The room is currently in use.
+    'roomStatus': 'Occupied', 
     'sortOrder': 2,
     'active': true,
   },
   {
     'roomStatusID': 'rs003',
-    'roomStatus': 'Reserved', //The room has been booked but not yet occupied.
+    'roomStatus': 'Reserved', 
     'description': 'The room has been booked but not yet occupied.',
     'sortOrder': 3,
     'active': true,
   },
   {
     'roomStatusID': 'rs004',
-    'roomStatus': 'Maintenance',//The room is undergoing maintenance and is not available for booking.
+    'roomStatus': 'Maintenance',
     'sortOrder': 4,
     'active': true,
   },
   {
     'roomStatusID': 'rs005',
-    'roomStatus': 'Out of Service', //The room is temporarily out of service and cannot be booked.
+    'roomStatus': 'Out of Service',
     'sortOrder': 5,
     'active': true,
   },
   {
     'roomStatusID': 'rs006',
-    'roomStatus': 'In Use', //room already booked and currently use
+    'roomStatus': 'In Use', 
     'sortOrder': 6,
     'active': true,
   },
 ];
 
-// Convert roomStatusJson to List<RoomStatusModel>
 List<RoomStatusModel> roomStatusList = roomStatusJson
     .map((json) => RoomStatusModel.fromJson(json))
     .toList();
