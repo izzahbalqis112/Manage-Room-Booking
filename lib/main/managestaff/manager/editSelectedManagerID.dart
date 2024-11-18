@@ -41,18 +41,15 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
   @override
   void initState() {
     super.initState();
-    // Fetch existing data from Firestore
     fetchManagerData();
   }
 
   Future<void> fetchManagerData() async {
     try {
-      // Fetch manager data from Firestore using managerID
       DocumentSnapshot docSnapshot =
       await _firestore.collection('managersAccount').doc(widget.managerID).get();
       if (docSnapshot.exists) {
         Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
-        // Set fetched data to the text controllers
         setState(() {
           _emailController.text = data['email'];
           _firstNameController.text = data['firstName'];
@@ -73,7 +70,6 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
   }
 
   bool _validateEmail(String email) {
-    // Regular expressions for the accepted email formats
     final RegExp googleEmail =
     RegExp(r'^[\w.+-]+@gmail\.com$', caseSensitive: false);
     final RegExp utemEmail =
@@ -83,14 +79,13 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
     final RegExp yahooEmail =
     RegExp(r'^[\w.+-]+@yahoo\.com$', caseSensitive: false);
 
-    // Check if the email matches any of the accepted formats
     if (googleEmail.hasMatch(email) ||
         utemEmail.hasMatch(email) ||
         outlookEmail.hasMatch(email) ||
         yahooEmail.hasMatch(email)) {
-      return true; // Email is valid
+      return true; 
     } else {
-      return false; // Email is invalid
+      return false; 
     }
   }
 
@@ -101,14 +96,11 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
   }
 
   bool _validatePassword(String password) {
-    // Check if password length is at least 6 characters
     if (password.length < 6) {
       return false;
     }
 
-    // Check for at least one uppercase letter
     bool hasUpperCase = false;
-    // Count the number of uppercase letters
     int upperCaseCount = 0;
     for (int i = 0; i < password.length; i++) {
       if (password[i] == password[i].toUpperCase() && password[i] != password[i].toLowerCase()) {
@@ -117,9 +109,7 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
       }
     }
 
-    // Check for at least one lowercase letter
     bool hasLowerCase = false;
-    // Count the number of lowercase letters
     int lowerCaseCount = 0;
     for (int i = 0; i < password.length; i++) {
       if (password[i] == password[i].toLowerCase() && password[i] != password[i].toUpperCase()) {
@@ -128,7 +118,6 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
       }
     }
 
-    // Check for at least one special character
     bool hasSpecialChar = false;
     String specialChars = r'^ !@#$%^&*()_+{}|:<>?-=[]\;\';
     for (int i = 0; i < password.length; i++) {
@@ -138,15 +127,13 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
       }
     }
 
-    // Return true only if all conditions are met
-    // And if the desired count of uppercase and lowercase letters is achieved
     return hasUpperCase && hasLowerCase && hasSpecialChar && upperCaseCount >= 1 && lowerCaseCount >= 1;
   }
 
   String hashPassword(String password) {
-    var bytes = utf8.encode(password); // Encode the password to UTF-8
-    var digest = sha256.convert(bytes); // Generate the SHA-256 hash
-    return digest.toString(); // Return the hashed password as a string
+    var bytes = utf8.encode(password); 
+    var digest = sha256.convert(bytes); 
+    return digest.toString(); 
   }
 
   bool _validateFirstName(String value) {
@@ -154,12 +141,10 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
   }
 
   bool _validateUtemStaffID(String value) {
-    // Check if the value is empty
     if (value.isEmpty) {
       return false;
     }
 
-    // Check if the value contains at least one lowercase letter
     bool hasLowerCase = false;
     for (int i = 0; i < value.length; i++) {
       if (value[i] == value[i].toLowerCase() && value[i] != value[i].toUpperCase()) {
@@ -168,7 +153,6 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
       }
     }
 
-    // Check if the value contains at least one digit (number)
     bool hasNumber = false;
     for (int i = 0; i < value.length; i++) {
       if (value.codeUnitAt(i) >= 48 && value.codeUnitAt(i) <= 57) {
@@ -177,7 +161,6 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
       }
     }
 
-    // Return true only if both conditions are met
     return hasLowerCase && hasNumber;
   }
 
@@ -202,9 +185,9 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
 
     final Reference storageRef = FirebaseStorage.instance
         .ref()
-        .child('managerProfilePhotos') // The directory name in Firebase Storage
-        .child(widget.managerID) // Use managerID as the directory name
-        .child('$widget.managerID.jpg'); // The image file name
+        .child('managerProfilePhotos') 
+        .child(widget.managerID) 
+        .child('$widget.managerID.jpg'); 
 
     final UploadTask uploadTask = storageRef.putFile(_selectedImage!);
 
@@ -217,7 +200,7 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
 
     setState(() {
       _isUploading = false;
-      _photoUrl = downloadUrl; // Update _photoUrl with the download URL
+      _photoUrl = downloadUrl; 
     });
 
     return downloadUrl;
@@ -228,7 +211,6 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
     try {
       String hashedPassword = hashPassword(_passwordController.text);
 
-      // Check if the current user is trying to edit their own profile
       String currentUserEmail = FirebaseAuth.instance.currentUser?.email ?? '';
       String managerEmail = _emailController.text;
 
@@ -236,13 +218,10 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
         Fluttertoast.showToast(msg: "You cannot edit your own profile.");
         return;
       }
-      // Check if a new image is selected
       if (_selectedImage != null) {
-        // Upload profile photo
         await _uploadUserProfilePhoto();
       }
 
-      // Update Firestore document with edited data
       await _firestore.collection('managersAccount').doc(widget.managerID).update({
         'email': _emailController.text,
         'password': hashedPassword,
@@ -252,13 +231,9 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
         'picture': _photoUrl,
       });
 
-      // Show success message
       Fluttertoast.showToast(msg: 'Manager data updated successfully');
-
-      // Navigate back
       Navigator.pop(context, true);
     } catch (e) {
-      // Handle errors
       print('Error updating manager data: $e');
       Fluttertoast.showToast(msg: 'Error updating manager data: $e');
     }
@@ -315,7 +290,7 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
                                     44),
                                 side: BorderSide(
                                     color: shadeColor2,
-                                    width: 2), // Border color and width
+                                    width: 2),
                               ),
                             ),
                             onPressed: _updateUserDetails,
@@ -517,7 +492,6 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
                                           filled: true,
                                         ),
                                         onChanged: (value) {
-                                          // No validation needed for last name
                                         },
                                         keyboardType: TextInputType.text,
                                         inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
@@ -584,7 +558,6 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
     );
   }
 
-  // Implement round tick buttons for selecting the role
   Widget _buildRoleSelection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -618,7 +591,7 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
               ),
               child: _selectedRole == 'Manager'
                   ? Icon(Icons.check, size: 18, color: Colors.white)
-                  : SizedBox(), // Show check icon if role is selected
+                  : SizedBox(), 
             ),
             SizedBox(width: 10),
             Text('Manager'),
@@ -633,7 +606,7 @@ class _EditSelectedManagerDataState extends State<EditSelectedManagerData> {
               ),
               child: _selectedRole == 'Staff'
                   ? Icon(Icons.check, size: 18, color: Colors.white)
-                  : SizedBox(), // Show check icon if role is selected
+                  : SizedBox(), 
             ),
             SizedBox(width: 10),
             Text('Staff'),
