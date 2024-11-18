@@ -8,14 +8,14 @@ class ManagerModel {
   final String? lastName;
   final String? picture;
   final String utemStaffID;
-  final String role; // Change type to String
+  final String role; 
 
   ManagerModel({
     required this.managerID,
     required this.email,
     required this.password,
     required this.utemStaffID,
-    required this.role, // Change type to String
+    required this.role, 
     required this.firstName,
     this.lastName,
     this.picture,
@@ -30,7 +30,7 @@ class ManagerModel {
       firstName: data['firstName'] as String,
       lastName: data['lastName'] as String?,
       utemStaffID: data['utemStaffID'] as String,
-      role: data['role'] as String, // Store role directly as a string
+      role: data['role'] as String,
       picture: data['picture'] as String?,
     );
   }
@@ -43,7 +43,7 @@ class ManagerModel {
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String?,
       utemStaffID: json['utemStaffID'] as String,
-      role: json['role'] as String, // Store role directly as a string
+      role: json['role'] as String,
       picture: json['picture'] as String?,
     );
   }
