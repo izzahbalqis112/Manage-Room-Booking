@@ -64,10 +64,7 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                 }
 
                 final ratings = snapshot.data!;
-
-                // Check if there are no ratings
                 if (ratings.isEmpty) {
-                  // Set default values when no ratings are available
                   double averageRating = 0.0;
                   int totalRatings = 0;
 
@@ -84,7 +81,6 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                         Center(
                           child: Column(
                             children: [
-                              // Display average user rating
                               Text(
                                 '${averageRating.toStringAsFixed(1)}',
                                 style: TextStyle(
@@ -94,10 +90,8 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: 8),
-                              // Create display average user rating star
                               _buildAverageRatingStar(averageRating),
                               SizedBox(height: 8),
-                              // Display total ratings
                               Text(
                                 '$totalRatings',
                                 style: TextStyle(
@@ -109,7 +103,6 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 16),
-                        // Display rating distribution
                         Text(
                           'Rating Distribution:',
                           style: TextStyle(
@@ -119,13 +112,11 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          height: 300, // Adjust height as needed
+                          height: 300, 
                           child: SfCartesianChart(
                             primaryXAxis: CategoryAxis(),
                             series: <CartesianSeries>[
-                              // Use CartesianSeries instead of ChartSeries
                               BarSeries<MapEntry<int, int>, String>(
-                                // Pass an empty list as dataSource when no ratings are available
                                 dataSource: [],
                                 xValueMapper: (MapEntry<int, int> entry, _) => entry.key.toString(),
                                 yValueMapper: (MapEntry<int, int> entry, _) => entry.value,
@@ -138,7 +129,6 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                   );
                 }
 
-                // Calculate average user rating
                 double averageRating = 0.0;
                 for (var rating in ratings) {
                   final bookingRatings = rating['bookingRatings'] as Map<String, dynamic>;
@@ -146,11 +136,7 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                   averageRating += userRating;
                 }
                 averageRating /= ratings.length;
-
-                // Calculate total ratings
                 int totalRatings = ratings.length;
-
-                // Calculate rating distribution
                 Map<int, int> ratingDistribution = {
                   1: 0,
                   2: 0,
@@ -161,8 +147,6 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                 for (var rating in ratings) {
                   final bookingRatings = rating['bookingRatings'] as Map<String, dynamic>;
                   final userRating = bookingRatings['userRating'] as double;
-
-                  // Check if the rating exists in the distribution map
                   if (ratingDistribution.containsKey(userRating)) {
                     ratingDistribution[userRating.toInt()] = (ratingDistribution[userRating.toInt()] ?? 0) + 1;
                   }
@@ -181,7 +165,6 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                       Center(
                         child: Column(
                           children: [
-                            // Display average user rating
                             Text(
                               '${averageRating.toStringAsFixed(1)}',
                               style: TextStyle(
@@ -190,10 +173,8 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
-                            // Create display average user rating star
                             _buildAverageRatingStar(averageRating),
                             SizedBox(height: 5),
-                            // Display total ratings
                             Text(
                               '$totalRatings',
                               style: TextStyle(
@@ -205,7 +186,6 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 16),
-                      // Display rating distribution
                       Text(
                         'Rating Distribution:',
                         style: TextStyle(
@@ -215,11 +195,10 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        height: 300, // Adjust height as needed
+                        height: 300,
                         child: SfCartesianChart(
                           primaryXAxis: CategoryAxis(),
                           series: <CartesianSeries>[
-                            // Use CartesianSeries instead of ChartSeries
                             BarSeries<MapEntry<int, int>, String>(
                               dataSource: ratingDistribution.entries.toList(),
                               xValueMapper: (MapEntry<int, int> entry, _) => entry.key.toString(),
@@ -244,81 +223,40 @@ class SelectedUsersRatingsBasedOnRoomIDPage extends StatelessWidget {
   }
 
   Widget _buildAverageRatingStar(double averageRating) {
-    // Define the filled star icon
     final filledStar = Icon(
       Icons.star,
       color: Colors.amber,
       size: 30,
     );
-
-    // Define the half-filled star icon
     final halfStar = Icon(
       Icons.star_half,
       color: Colors.amber,
       size: 30,
     );
-
-    // Define the empty star icon
     final emptyStar = Icon(
       Icons.star_border,
       color: Colors.amber,
       size: 30,
     );
-
-    // Determine the number of filled stars
     final filledStars = averageRating.floor();
-
-    // Check if there is a half star
     final hasHalfStar = averageRating - filledStars >= 0.5;
-
-    // Determine the number of empty stars
     final emptyStars = 5 - filledStars - (hasHalfStar ? 1 : 0);
-
-    // Create a list of star icons
     final List<Widget> starIcons = List.generate(
       filledStars,
           (index) => filledStar,
     );
-
-    // Add a half star if necessary
     if (hasHalfStar) {
       starIcons.add(halfStar);
     }
-
-    // Add empty stars to fill the row
     starIcons.addAll(List.generate(
       emptyStars,
           (index) => emptyStar,
     ));
-
-    // Return a row containing the star icons
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: starIcons,
     );
   }
-
-  /*Widget _buildRatingBar(int star, int count) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '$star Star',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        SizedBox(height: 4),
-        Container(
-          height: 20.0 * count, // Adjust height based on count
-          width: 20,
-          color: Colors.blue, // Replace with appropriate color
-        ),
-        SizedBox(height: 4),
-      ],
-    );
-  }
-   */
 }
 
 class RatingsList extends StatelessWidget {
@@ -346,7 +284,6 @@ class RatingsList extends StatelessWidget {
               final bookingRatings = rating['bookingRatings'] as Map<String, dynamic>;
 
               if (bookingRatings == null || !bookingRatings.containsKey('userRating') || bookingRatings['userRating'] == null) {
-                // Return a ListTile with an empty state or a message
                 return ListTile(
                   title: Text(
                     'No ratings available',
@@ -360,10 +297,8 @@ class RatingsList extends StatelessWidget {
               }
 
               final user = rating['user'] as Map<String, dynamic>;
-              final userRating = bookingRatings['userRating'] as double; // Assuming userRating is a double
+              final userRating = bookingRatings['userRating'] as double; 
               final room = rating['room'] as Map<String, dynamic>;
-
-              // Format the date and time
               final dateTime = (bookingRatings['dateTimeToday'] as Timestamp).toDate();
               final formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
               final formattedTime = DateFormat('hh:mm a').format(dateTime);
@@ -377,7 +312,7 @@ class RatingsList extends StatelessWidget {
                         user['picture'] ?? '',
                       ),
                     ),
-                    SizedBox(width: 10), // Add some spacing between the image and text
+                    SizedBox(width: 10), 
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -385,8 +320,8 @@ class RatingsList extends StatelessWidget {
                           RichText(
                             text: TextSpan(
                               style: TextStyle(
-                                fontSize: 16.0, // Adjust the font size as needed
-                                color: Colors.black, // Define the text color
+                                fontSize: 16.0, 
+                                color: Colors.black,
                               ),
                               children: [
                                 TextSpan(text: '${user['firstName']} ', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -397,11 +332,11 @@ class RatingsList extends StatelessWidget {
                           SizedBox(height: 5),
                           Text(
                             'Booking ID ${rating['displayBookingID']}',
-                            style: TextStyle(fontSize: 14.0, color: shadeColor2), // Adjust the font size as needed
+                            style: TextStyle(fontSize: 14.0, color: shadeColor2), 
                           ),
                           Text(
                             '${room['name']}',
-                            style: TextStyle(fontSize: 14.0, color: shadeColor2), // Adjust the font size as needed
+                            style: TextStyle(fontSize: 14.0, color: shadeColor2),
                           ),
                         ],
                       ),
@@ -416,7 +351,7 @@ class RatingsList extends StatelessWidget {
                       children: [
                         Expanded(
                           child: RatingBar.builder(
-                            initialRating: userRating, // Set the initial rating
+                            initialRating: userRating, 
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
@@ -427,11 +362,10 @@ class RatingsList extends StatelessWidget {
                               color: Colors.amber,
                             ),
                             onRatingUpdate: (rating) {
-                              // Dummy function, as it won't be used
                             },
                           ),
                         ),
-                        SizedBox(width: 10), // Add some spacing between the rating bar and text
+                        SizedBox(width: 10), 
                         Text('$formattedDate , $formattedTime', style: TextStyle(fontSize: 14.0)),
                       ],
                     ),
@@ -460,7 +394,7 @@ Future<List<DocumentSnapshot>> _fetchRoomRatings(String roomID) async {
     if (bookingRatings == null || !bookingRatings.containsKey('userRating')) {
       return false;
     }
-    return true; // Return true for documents with 'userRating'
+    return true;
   }).toList();
 
   return filteredDocs;
