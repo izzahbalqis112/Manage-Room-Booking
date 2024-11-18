@@ -44,23 +44,19 @@ class _ViewSelectedRoomDataPageState extends State<ViewSelectedRoomDataPage> {
       });
     } catch (error) {
       print('Error loading room data: $error');
-      // Handle error
     }
   }
 
   Future<Map<String, dynamic>> fetchRatingsData(String roomID) async {
-    // Query Firestore for completed bookings for the specified room
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('roomBookingData')
         .where('room.roomID', isEqualTo: roomID)
         .where('bookingStatus.status', isEqualTo: 'Completed')
         .get();
 
-    // Initialize totalRating and totalRatings
     double totalRating = 0;
     int totalRatings = 0;
 
-    // If there are ratings, calculate totalRating and totalRatings
     if (snapshot.docs.isNotEmpty) {
       totalRatings = snapshot.docs.length;
       snapshot.docs.forEach((doc) {
@@ -68,7 +64,6 @@ class _ViewSelectedRoomDataPageState extends State<ViewSelectedRoomDataPage> {
       });
     }
 
-    // Calculate average rating
     double averageRating = totalRatings > 0 ? totalRating / totalRatings : 0.0;
 
     return {
@@ -111,7 +106,6 @@ class _ViewSelectedRoomDataPageState extends State<ViewSelectedRoomDataPage> {
           ),
         );
 
-        // Extract numeric value from formatted roomPrice
         String formattedRoomPrice = data['roomPrice'];
         double roomPrice = 0.0;
         if (formattedRoomPrice.startsWith('RM ')) {
@@ -125,7 +119,7 @@ class _ViewSelectedRoomDataPageState extends State<ViewSelectedRoomDataPage> {
           about: data['about'],
           capacity: data['capacity'],
           roomStatus: roomStatus1,
-          roomPrice: roomPrice, // Store the numeric value
+          roomPrice: roomPrice, 
           roomFacilities: roomFacilities,
           roomArea: data['roomArea'],
         );
@@ -279,7 +273,7 @@ class _ViewSelectedRoomDataPageState extends State<ViewSelectedRoomDataPage> {
                                                     SizedBox(width: 10),
                                                     Text(
                                                       _averageRating != null
-                                                          ? _averageRating!.toStringAsFixed(1) // Use null-aware operator !.
+                                                          ? _averageRating!.toStringAsFixed(1) 
                                                           : 'N/A',
                                                       style: TextStyle(
                                                         color: Colors.white,
@@ -289,7 +283,7 @@ class _ViewSelectedRoomDataPageState extends State<ViewSelectedRoomDataPage> {
                                                     ),
                                                     SizedBox(width: 10),
                                                     Text(
-                                                      '($_totalRatings)', // Display total ratings
+                                                      '($_totalRatings)',
                                                       style: TextStyle(
                                                         color: Colors.white.withOpacity(.5),
                                                         fontWeight: FontWeight.bold,
@@ -452,11 +446,11 @@ class _ViewSelectedRoomDataPageState extends State<ViewSelectedRoomDataPage> {
             itemBuilder: (context, index) {
               return AspectRatio(
                 aspectRatio: 16 / 15,
-                child: CachedNetworkImage( // Replace Image.network with CachedNetworkImage
+                child: CachedNetworkImage( 
                   imageUrl: roomData.images[index],
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while loading
-                  errorWidget: (context, url, error) => Icon(Icons.error), // Widget to display in case of error
+                  placeholder: (context, url) => CircularProgressIndicator(), 
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               );
             },
@@ -522,7 +516,7 @@ class _ViewSelectedRoomDataPageState extends State<ViewSelectedRoomDataPage> {
   }
 
   Widget buildFacility(String facilityName) {
-    IconData iconData = facilityIcons[facilityName] ?? EvaIcons.questionMarkCircleOutline; // Default icon if not found
+    IconData iconData = facilityIcons[facilityName] ?? EvaIcons.questionMarkCircleOutline;
     return Column(
       children: [
         Container(
