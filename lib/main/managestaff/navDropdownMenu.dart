@@ -24,8 +24,8 @@ class _NavDropdownMenuState extends State<NavDropdownMenu> {
         child: Column(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2), // Custom padding
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 2),  // Custom margin
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 2), 
               child: SelectDropList(
                 itemSelected: optionItemSelected,
                 dropListModel: dropListModel,
@@ -38,7 +38,6 @@ class _NavDropdownMenuState extends State<NavDropdownMenu> {
                   setState(() {
                     optionItemSelected = optionItem;
                   });
-                  // Navigating based on the selected item
                   switch (optionItem.title) {
                     case "Manager":
                       Navigator.pushNamed(context, '/viewManager');
@@ -47,7 +46,6 @@ class _NavDropdownMenuState extends State<NavDropdownMenu> {
                       Navigator.pushNamed(context, '/viewStaff');
                       break;
                     default:
-                    // Handle unexpected cases
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('Unknown option selected'),
                       ));
