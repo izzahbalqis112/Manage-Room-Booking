@@ -73,7 +73,6 @@ class _HomepageState extends State<Homepage>  with SingleTickerProviderStateMixi
           ),
         );
 
-        // Convert roomPrice from String to double
         double roomPrice = double.tryParse(data['roomPrice']) ?? 0.0;
 
         roomsList.add(RoomsModel(
@@ -88,10 +87,7 @@ class _HomepageState extends State<Homepage>  with SingleTickerProviderStateMixi
           roomArea: data['roomArea'] ?? 0.0,
         ));
       }
-
-      // Sort rooms by name in ascending order
       roomsList.sort((a, b) => a.name.compareTo(b.name));
-
       return roomsList;
     } else {
       return [];
@@ -112,17 +108,17 @@ class _HomepageState extends State<Homepage>  with SingleTickerProviderStateMixi
             Padding(
               padding: const EdgeInsets.only(top: 26, left: 4, right: 8),
               child: Container(
-                width: 50, // Adjust the size as needed
-                height: 50, // Adjust the size as needed
+                width: 50, 
+                height: 50, 
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white,
                 ),
                 child: Center(
                   child: Image.asset(
-                    'lib/assets/img/TF-logo1.png', // Replace with your image path
-                    width: 30, // Adjust the width as needed
-                    height: 30, // Adjust the height as needed
+                    'lib/assets/img/TF-logo1.png', 
+                    width: 30, 
+                    height: 30,
                   ),
                 ),
               ),
@@ -132,9 +128,9 @@ class _HomepageState extends State<Homepage>  with SingleTickerProviderStateMixi
               child: Text(
                 'Teaching Factory',
                 style: GoogleFonts.getFont(
-                  'Roboto', // You can change this to any other Google Font you prefer
+                  'Roboto', 
                   fontWeight: FontWeight.bold,
-                  fontSize: 24, // Adjust font size as needed
+                  fontSize: 24,
                   color: Colors.white,
                 ),
               ),
@@ -145,7 +141,6 @@ class _HomepageState extends State<Homepage>  with SingleTickerProviderStateMixi
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          // Image container
           Container(
             width: double.infinity,
             height: double.infinity,
@@ -156,23 +151,21 @@ class _HomepageState extends State<Homepage>  with SingleTickerProviderStateMixi
               ),
             ),
           ),
-          // Search TextField
           Positioned(
             top: 30,
             left: 30,
             right: 30,
             child: GestureDetector(
               onTap: () {
-                // Navigate to the search page when tapped
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SearchPage()),
                 );
               },
               child: AbsorbPointer(
-                absorbing: true, // Prevents the GestureDetector from receiving pointer events
+                absorbing: true, 
                 child: TextField(
-                  focusNode: _searchFocusNode, // Assign the FocusNode to the TextField
+                  focusNode: _searchFocusNode,
                   decoration: InputDecoration(
                     hintText: 'Search rooms...',
                     hintStyle: TextStyle(color: Colors.grey),
@@ -189,17 +182,14 @@ class _HomepageState extends State<Homepage>  with SingleTickerProviderStateMixi
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide(color: Colors.white),
                     ),
-                    // Set the color of the container to white
                     fillColor: Colors.white,
                     filled: true,
                   ),
                   style: TextStyle(color: Colors.white),
-                  // Add your search functionality here
                 ),
               ),
             ),
           ),
-          // Rooms and View All button
           Positioned(
             top: 130,
             left: 30,
@@ -216,14 +206,14 @@ class _HomepageState extends State<Homepage>  with SingleTickerProviderStateMixi
                         color: Colors.white,
                       ),
                     ),
-                    SizedBox(width: 218), // Adjust spacing as needed
+                    SizedBox(width: 218), 
                     TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ViewAllRoomDataPage(
-                              onClose: _reloadData, // Pass the callback function here
+                              onClose: _reloadData,
                             ),
                           ),
                         );
@@ -239,19 +229,16 @@ class _HomepageState extends State<Homepage>  with SingleTickerProviderStateMixi
                     ),
                   ],
                 ),
-                // Scrollable containers for rooms
                 FutureBuilder<List<RoomsModel>>(
                   future: _roomsData,
                   builder: (context, snapshot) {
                     if (_roomsData == null) {
-                      // Handle the case when data is not loaded yet
                       return CircularProgressIndicator();
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else if (snapshot.connectionState == ConnectionState.waiting) {
                       return CircularProgressIndicator();
                     } else {
-                      // Data fetching is successful, access the list of rooms
                       List<RoomsModel> rooms = snapshot.data!;
                       return SizedBox(
                         height: 260,
@@ -339,9 +326,9 @@ class _HomepageState extends State<Homepage>  with SingleTickerProviderStateMixi
                     Icon(
                       Icons.history,
                       size: 50,
-                      color: Colors.white, // Icon color
+                      color: Colors.white,
                     ),
-                    SizedBox(height: 10), // Adjust spacing between icon and text
+                    SizedBox(height: 10),
                     Text(
                       'User Ratings',
                       style: TextStyle(
@@ -361,7 +348,6 @@ class _HomepageState extends State<Homepage>  with SingleTickerProviderStateMixi
   }
 }
 
-//Rooms Container
 class RoomContainer extends StatelessWidget {
   final RoomsModel room;
 
@@ -374,7 +360,6 @@ class RoomContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigate to ViewSelectedRoomDataPage when container is tapped
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -393,7 +378,6 @@ class RoomContainer extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Room image container
             Container(
               width: 160,
               height: 160,
@@ -404,19 +388,18 @@ class RoomContainer extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: CachedNetworkImage(
-                  imageUrl: room.images.isNotEmpty ? room.images[0] : '', // Display first image if available
+                  imageUrl: room.images.isNotEmpty ? room.images[0] : '', 
                   width: 160,
                   height: 160,
-                  fit: BoxFit.cover, // Adjust how the image fills the container
-                  placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while loading
-                  errorWidget: (context, url, error) => Icon(Icons.error), // Widget to display in case of error
+                  fit: BoxFit.cover, 
+                  placeholder: (context, url) => CircularProgressIndicator(), 
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
             ),
-            SizedBox(height: 20), // Adjust spacing between image and text
-            // Room data text
+            SizedBox(height: 20), 
             Text(
-              room.name, // Display room name
+              room.name, 
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
