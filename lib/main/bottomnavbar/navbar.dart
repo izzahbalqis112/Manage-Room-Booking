@@ -41,7 +41,6 @@ class _ButtomNavBarState extends State<ButtomNavBar> {
             index: index,
             items: items,
             color: shadeColor2,
-            //buttonBackgroundColor: shadeColor1,
             animationDuration: Duration(milliseconds: 300),
             backgroundColor: Colors.transparent,
             onTap: (newIndex) {
