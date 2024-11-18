@@ -22,7 +22,6 @@ class _PendingBookingPageState extends State<PendingBookingPage> {
   }
 
   Future<List<DocumentSnapshot>> _fetchPendingBookings() async {
-    // Query Firestore for pending bookings
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('roomBookingData')
         .where('bookingStatus.status', isEqualTo: 'Pending')
@@ -38,8 +37,7 @@ class _PendingBookingPageState extends State<PendingBookingPage> {
           .doc(bookingId)
           .get();
 
-      // Extract booking details from the snapshot
-      Map<String, dynamic> bookingData = bookingSnapshot.data() as Map<String, dynamic>; // Cast to Map<String, dynamic>
+      Map<String, dynamic> bookingData = bookingSnapshot.data() as Map<String, dynamic>; 
       String displayBookingID = bookingData['displayBookingID'] ?? '';
 
       await FirebaseFirestore.instance
@@ -53,12 +51,10 @@ class _PendingBookingPageState extends State<PendingBookingPage> {
         'bookingStatus.active': 'true',
       });
 
-      // Reload the page
       setState(() {
         _pendingBookingsFuture = _fetchPendingBookings();
       });
 
-      // Assuming the booking is successfully saved
       bool isBookingUpdate = true;
       String userEmail = bookingData['user']['email'] ?? '';
 
@@ -69,28 +65,24 @@ class _PendingBookingPageState extends State<PendingBookingPage> {
           payload: 'confirm_booking',
         );
 
-        // Save notification data to Firestore
         await _firestore.collection('notifications').add({
           'title': 'Teaching Factory',
           'body': 'Room booking request $displayBookingID has been confirm!',
           'payload': 'confirm_booking',
-          'userEmail': userEmail, //based on selected booking id details data user email
-          'displayBookingID': displayBookingID, ////based on selected booking id details data
+          'userEmail': userEmail,
+          'displayBookingID': displayBookingID,
         });
       }
     } catch (error) {
       print('Error updating booking status: $error');
-      // Handle error
     }
   }
 
   void _rejectBooking(String bookingId) async {
     try {
-      // Show rejection reason form
       _showRejectionReasonForm(bookingId);
     } catch (error) {
       print('Error rejecting booking: $error');
-      // Handle error
     }
   }
 
@@ -115,7 +107,6 @@ class _PendingBookingPageState extends State<PendingBookingPage> {
 
   void _saveRejectionReason(String bookingId, String reason) async {
     try {
-      // Update Firestore with the rejection reason
       await FirebaseFirestore.instance
           .collection('roomBookingData')
           .doc(bookingId)
@@ -128,19 +119,16 @@ class _PendingBookingPageState extends State<PendingBookingPage> {
         'bookingStatus.reason': reason,
       });
 
-      // Reload the page
       setState(() {
         _pendingBookingsFuture = _fetchPendingBookings();
       });
 
-      // Navigate to the rejected page after saving the reason
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => RequestPendingBookingPage(initialTabIndex: 4)),
       );
     } catch (error) {
       print('Error saving rejection reason: $error');
-      // Handle error
     }
   }
 
@@ -167,8 +155,8 @@ class _PendingBookingPageState extends State<PendingBookingPage> {
                     SingleChildScrollView(
                       child: ContainerWidget(
                         booking: booking,
-                        onUpdateStatus: _updateBookingStatus, // Pass the callback function
-                        onReject: _rejectBooking, // Pass the reject callback
+                        onUpdateStatus: _updateBookingStatus,
+                        onReject: _rejectBooking, 
 
                       ),
                     ),
@@ -198,7 +186,6 @@ class ContainerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Extract data from the booking document
     var displayBookingID = booking['displayBookingID'] ?? '';
     var roomName = booking['room']['name'] ?? '';
     var userFirstName = booking['user']['firstName'] ?? '';
@@ -218,7 +205,6 @@ class ContainerWidget extends StatelessWidget {
     DecorationImage? backgroundImage;
 
     if (roomImages.isNotEmpty) {
-      // Assuming you want to use the first image in the list
       String imageUrl = roomImages[0];
       backgroundImage = DecorationImage(
         image: CachedNetworkImageProvider(imageUrl),
@@ -313,7 +299,7 @@ class ContainerWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$numberOfDays days', //no of days based on check-in date & check-out date
+                  '$numberOfDays days',
                   style: TextStyle(
                     fontSize: 14,
                     color: shadeColor5,
@@ -342,20 +328,19 @@ class ContainerWidget extends StatelessWidget {
           Positioned(
             top: 80,
             left: 130,
-            child: TextButton( // Use TextButton for button appearance
+            child: TextButton(
               onPressed: () {
-                // Navigate to ViewMoreSelectedBookingIDDetailsPage
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ViewMoreSelectedBookingIDDetailsPage(
-                      bookingId: booking.id, // Pass the booking ID
+                      bookingId: booking.id, 
                     ),
                   ),
                 );
               },
               child: Text(
-                'View More >', //click text button and go to the view selected booking details
+                'View More >', 
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -438,8 +423,8 @@ class HorizontalLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 1.0, // Height is 1.0 for a horizontal line
-      width: width, // Adjust the width of the line as needed
+      height: 1.0, 
+      width: width,
       color: color,
     );
   }
@@ -496,7 +481,7 @@ class _RejectionReasonFormState extends State<RejectionReasonForm> {
                   String reason = _reasonController.text.trim();
                   if (reason.isNotEmpty) {
                     widget.onReasonSubmitted(reason);
-                    Navigator.pop(context); // Close the bottom sheet after submitting reason
+                    Navigator.pop(context); 
                   }
                 },
                 style: ButtonStyle(
