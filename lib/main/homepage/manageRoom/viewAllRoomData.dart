@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
+import 'package:firebase_auth/firebase_auth.dart'; 
 import 'package:flutter/material.dart';
 import 'package:tfrb_managerside/main/homepage/manageRoom/viewSelectedRoomData.dart';
 import '../../../assets/Colors.dart';
@@ -66,10 +66,8 @@ class _ViewAllRoomDataPageState extends State<ViewAllRoomDataPage> with SingleTi
           ),
         );
 
-        // Extract and parse the room price
         String formattedRoomPrice = data['roomPrice'];
         double roomPrice = double.tryParse(formattedRoomPrice.substring(3)) ?? 0.0;
-
         roomsList.add(RoomsModel(
           roomID: data['roomID'],
           images: List<String>.from(data['images'] ?? []),
@@ -83,7 +81,6 @@ class _ViewAllRoomDataPageState extends State<ViewAllRoomDataPage> with SingleTi
         ));
       }
 
-      // Sort rooms by name in ascending order
       roomsList.sort((a, b) => a.name.compareTo(b.name));
 
       return roomsList;
@@ -96,7 +93,6 @@ class _ViewAllRoomDataPageState extends State<ViewAllRoomDataPage> with SingleTi
   void _startTimer(List<RoomsModel> rooms) {
     Timer.periodic(Duration(seconds: 3), (timer) {
       setState(() {
-        // Increment the index to move to the next image
         _currentIndex = (_currentIndex + 1) % rooms.length;
       });
     });
@@ -310,8 +306,8 @@ class _ViewAllRoomDataPageState extends State<ViewAllRoomDataPage> with SingleTi
                                         fit: BoxFit.cover,
                                         height: 200,
                                         width: 400,
-                                        placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while loading
-                                        errorWidget: (context, url, error) => Icon(Icons.error), // Widget to display in case of error
+                                        placeholder: (context, url) => CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) => Icon(Icons.error),
                                       ),
                                     );
                                   },
@@ -333,10 +329,10 @@ class _ViewAllRoomDataPageState extends State<ViewAllRoomDataPage> with SingleTi
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 5), // Adjust spacing between name and about
+                                SizedBox(height: 5),
                                 Container(
                                   width: 360,
-                                  child: SingleChildScrollView( // Add SingleChildScrollView for scrolling
+                                  child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Text(
                                       room.about,
@@ -344,16 +340,16 @@ class _ViewAllRoomDataPageState extends State<ViewAllRoomDataPage> with SingleTi
                                         color: Colors.white,
                                         fontSize: 16,
                                       ),
-                                      maxLines: 3, // Limit the number of lines
-                                      overflow: TextOverflow.ellipsis, // Handle overflow
+                                      maxLines: 3, 
+                                      overflow: TextOverflow.ellipsis, 
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 10), // Adjust spacing between name and about
+                                SizedBox(height: 10), 
                                 Container(
                                   width: 360,
-                                  child: SingleChildScrollView( // Add SingleChildScrollView for scrolling
-                                    scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+                                  child: SingleChildScrollView( 
+                                    scrollDirection: Axis.horizontal, 
                                     child: Row(
                                       children: room.roomFacilities?.map((facility) {
                                         return Row(
@@ -389,16 +385,16 @@ class _ViewAllRoomDataPageState extends State<ViewAllRoomDataPage> with SingleTi
                                 Row(
                                   children: [
                                     Text(
-                                      'RM ' + room.roomPrice.toStringAsFixed(2), // Room price with currency
+                                      'RM ' + room.roomPrice.toStringAsFixed(2),
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    SizedBox(width: 5), // Adjust spacing between room price and "/Day" text
+                                    SizedBox(width: 5), 
                                     Text(
-                                      '/day', // Text for "/Day"
+                                      '/day', 
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -409,7 +405,6 @@ class _ViewAllRoomDataPageState extends State<ViewAllRoomDataPage> with SingleTi
                               ],
                             ),
                           ),
-
                         ],
                       ),
                     ),
