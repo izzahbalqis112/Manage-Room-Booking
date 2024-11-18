@@ -1,37 +1,18 @@
 import 'package:flutter/material.dart';
 
-/// Defines widgets which are to used as rating bar items.
 class RatingWidget {
-  /// Creates [RatingWidget] with the given [full], [half] and [empty] widgets.
   const RatingWidget({
     required this.full,
     required this.half,
     required this.empty,
   });
-
-  /// Defines widget to be used as rating bar item
-  /// when the item is completely rated.
   final Widget full;
-
-  /// Defines widget to be used as rating bar item
-  /// when only the half portion of item is rated.
   final Widget half;
-
-  /// Defines widget to be used as rating bar item
-  /// when the item is unrated.
   final Widget empty;
 }
 
-/// A widget to receive rating input from users.
-///
-/// [RatingBar] can also be used to display rating
-///
-/// Prefer using [RatingBarIndicator] instead, if read only version is required.
-/// As RatingBarIndicator supports any fractional rating value.
 class RatingBar extends StatefulWidget {
-  /// Creates [RatingBar] using the [ratingWidget].
   const RatingBar({
-    /// Customizes the Rating Bar item with [RatingWidget].
     required RatingWidget ratingWidget,
     required this.onRatingUpdate,
     this.glowColor,
@@ -55,11 +36,7 @@ class RatingBar extends StatefulWidget {
   })  : _itemBuilder = null,
         _ratingWidget = ratingWidget;
 
-  /// Creates [RatingBar] using the [itemBuilder].
   const RatingBar.builder({
-    /// {@template flutterRatingBar.itemBuilder}
-    /// Widget for each rating bar item.
-    /// {@endtemplate}
     required IndexedWidgetBuilder itemBuilder,
     required this.onRatingUpdate,
     this.glowColor,
@@ -82,113 +59,29 @@ class RatingBar extends StatefulWidget {
     super.key,
   })  : _itemBuilder = itemBuilder,
         _ratingWidget = null;
-
-  /// Return current rating whenever rating is updated.
-  ///
-  /// [updateOnDrag] can be used to change the behaviour
-  /// how the callback reports the update.
   final ValueChanged<double> onRatingUpdate;
-
-  /// Defines color for glow.
-  ///
-  /// Default is [ColorScheme.secondary].
   final Color? glowColor;
-
-  /// Sets maximum rating
-  ///
-  /// Default is [itemCount].
   final double? maxRating;
-
-  /// {@template flutterRatingBar.textDirection}
-  /// The text flows from right to left if [textDirection] = TextDirection.rtl
-  /// {@endtemplate}
   final TextDirection? textDirection;
-
-  /// {@template flutterRatingBar.unratedColor}
-  /// Defines color for the unrated portion.
-  ///
-  /// Default is [ThemeData.disabledColor].
-  /// {@endtemplate}
   final Color? unratedColor;
-
-  /// Default [allowHalfRating] = false.
-  /// Setting true enables half rating support.
   final bool allowHalfRating;
-
-  /// {@template flutterRatingBar.direction}
-  /// Direction of rating bar.
-  ///
-  /// Default = Axis.horizontal
-  /// {@endtemplate}
   final Axis direction;
-
-  /// if set to true, Rating Bar item will glow when being touched.
-  ///
-  /// Default is true.
   final bool glow;
-
-  /// Defines the radius of glow.
-  ///
-  /// Default is 2.
   final double glowRadius;
-
-  /// if set to true, will disable any gestures over the rating bar.
-  ///
-  /// Default is false.
   final bool ignoreGestures;
-
-  /// Defines the initial rating to be set to the rating bar.
   final double initialRating;
-
-  /// {@template flutterRatingBar.itemCount}
-  /// Defines total number of rating bar items.
-  ///
-  /// Default is 5.
-  /// {@endtemplate}
   final int itemCount;
-
-  /// {@template flutterRatingBar.itemPadding}
-  /// The amount of space by which to inset each rating item.
-  /// {@endtemplate}
   final EdgeInsetsGeometry itemPadding;
-
-  /// {@template flutterRatingBar.itemSize}
-  /// Defines width and height of each rating item in the bar.
-  ///
-  /// Default is 40.0
-  /// {@endtemplate}
   final double itemSize;
-
-  /// Sets minimum rating
-
-  /// Default is 0.
-final double minRating;
-
-/// if set to true will disable drag to rate feature.
-/// Note: Enabling this mode will disable half rating capability.
-///
-/// Default is false.
-final bool tapOnlyMode;
-
-/// Defines whether or not the `onRatingUpdate` updates while dragging.
-///
-/// Default is false.
-final bool updateOnDrag;
-
-/// How the item within the [RatingBar] should be placed in the main axis.
-///
-/// For example, if [wrapAlignment] is [WrapAlignment.center], the item in
-/// the RatingBar are grouped together in the center of their run
-/// in the main axis.
-///
-/// Defaults to [WrapAlignment.start].
-final WrapAlignment wrapAlignment;
-
-final IndexedWidgetBuilder? _itemBuilder;
-final RatingWidget? _ratingWidget;
-
-@override
-State<RatingBar> createState() => _RatingBarState();
+  final double minRating;
+  final bool tapOnlyMode;
+  final bool updateOnDrag;
+  final WrapAlignment wrapAlignment;
+  final IndexedWidgetBuilder? _itemBuilder;
+  final RatingWidget? _ratingWidget;
+  
+  @override
+  State<RatingBar> createState() => _RatingBarState();
 }
 
 class _RatingBarState extends State<RatingBar> {
