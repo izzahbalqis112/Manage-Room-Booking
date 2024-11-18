@@ -74,7 +74,6 @@ class ContainerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Extract data from the booking document
     var displayBookingID = booking['displayBookingID'] ?? '';
     var roomName = booking['room']['name'] ?? '';
     var pendingStatus = booking['bookingStatus']['status'] ?? '';
@@ -85,15 +84,11 @@ class ContainerWidget extends StatelessWidget {
     var userLastName = booking['user']['lastName'] ?? '';
     var checkInDateNoTime = DateTime(checkInDate.year, checkInDate.month, checkInDate.day);
     var checkOutDateNoTime = DateTime(checkOutDate.year, checkOutDate.month, checkOutDate.day);
-
     var numberOfDays = checkOutDateNoTime.difference(checkInDateNoTime).inDays;
-
-
     List<dynamic> roomImages = booking['room']['images'] ?? [];
     DecorationImage? backgroundImage;
 
     if (roomImages.isNotEmpty) {
-      // Assuming you want to use the first image in the list
       String imageUrl = roomImages[0];
       backgroundImage = DecorationImage(
         image: CachedNetworkImageProvider(imageUrl),
@@ -252,8 +247,8 @@ class HorizontalLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 1.0, // Height is 1.0 for a horizontal line
-      width: width, // Adjust the width of the line as needed
+      height: 1.0,
+      width: width,
       color: color,
     );
   }
