@@ -20,7 +20,6 @@ class _CompletedBookingPageState extends State<CompletedBookingPage> {
 
   Future<List<DocumentSnapshot>> _fetchCompletedBookings() async {
 
-    // Query Firestore for completed bookings
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('roomBookingData')
         .where('bookingStatus.status', isEqualTo: 'Completed')
@@ -76,7 +75,6 @@ class ContainerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Extract data from the booking document
     var displayBookingID = booking['displayBookingID'] ?? '';
     var roomName = booking['room']['name'] ?? '';
     var status = booking['bookingStatus']['status'] ?? '';
@@ -94,7 +92,6 @@ class ContainerWidget extends StatelessWidget {
     DecorationImage? backgroundImage;
 
     if (roomImages.isNotEmpty) {
-      // Assuming you want to use the first image in the list
       String imageUrl = roomImages[0];
       backgroundImage = DecorationImage(
         image: CachedNetworkImageProvider(imageUrl),
@@ -189,7 +186,7 @@ class ContainerWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$numberOfDays days', //no of days based on check-in date & check-out date
+                  '$numberOfDays days', 
                   style: TextStyle(
                     fontSize: 14,
                     color: shadeColor5,
@@ -218,9 +215,8 @@ class ContainerWidget extends StatelessWidget {
           Positioned(
             top: 80,
             left: 130,
-            child: TextButton( // Use TextButton for button appearance
+            child: TextButton( 
               onPressed: () {
-                // Navigate to ViewMoreSelectedBookingIDDetailsPage
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -229,7 +225,7 @@ class ContainerWidget extends StatelessWidget {
                 );
               },
               child: Text(
-                'View More >', //click text button and go to the view selected booking details
+                'View More >',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -276,8 +272,8 @@ class HorizontalLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 1.0, // Height is 1.0 for a horizontal line
-      width: width, // Adjust the width of the line as needed
+      height: 1.0, 
+      width: width, 
       color: color,
     );
   }
