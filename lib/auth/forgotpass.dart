@@ -23,33 +23,27 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool _validateEmail(String email) {
-    // Regular expressions for the accepted email formats
     final RegExp googleEmail = RegExp(r'^[\w.+-]+@gmail\.com$', caseSensitive: false);
     final RegExp utemEmail = RegExp(r'^[\w.+-]+@(utem\.edu\.my|student\.utem\.edu\.my)$', caseSensitive: false);
     final RegExp outlookEmail = RegExp(r'^[\w.+-]+@outlook\.com$', caseSensitive: false);
     final RegExp yahooEmail = RegExp(r'^[\w.+-]+@yahoo\.com$', caseSensitive: false);
 
-    // Check if the email matches any of the accepted formats
     if (googleEmail.hasMatch(email) ||
         utemEmail.hasMatch(email) ||
         outlookEmail.hasMatch(email) ||
         yahooEmail.hasMatch(email)) {
-      return true; // Email is valid
+      return true;
     } else {
-      return false; // Email is invalid
+      return false; 
     }
   }
 
   bool _validateStaffID(String staffID) {
-    // Check if the staff ID is empty
     if (staffID.isEmpty) {
-      return false; // Staff ID is empty
+      return false; 
     }
 
-    // Regular expression for the accepted staff ID format (letters followed by numbers)
     final RegExp staffIDRegex = RegExp(r'^[a-zA-Z]+[0-9]+$');
-
-    // Check if the staff ID matches the accepted format
     return staffIDRegex.hasMatch(staffID);
   }
 
@@ -68,7 +62,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     }
   }
 
-  // Method to fetch ManagerModel from Firestore based on email
   Future<ManagerModel> fetchManagerByEmail(String email) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('managersAccount')
@@ -104,8 +97,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           },
         ),
       ),
-      resizeToAvoidBottomInset: false, // Set this to false
-      body: SingleChildScrollView( // Wrap the body with SingleChildScrollView
+      resizeToAvoidBottomInset: false, 
+      body: SingleChildScrollView( 
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -223,8 +216,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                         _isStaffIDValid = _validateStaffID(value);
                                       });
                                     },
-                                    keyboardType: TextInputType.text, // Adjusted to number
-                                    inputFormatters: [FilteringTextInputFormatter.singleLineFormatter], // Adjusted to accept only digits
+                                    keyboardType: TextInputType.text,
+                                    inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
                                   ),
                                 ),
                               ],
@@ -243,21 +236,21 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                const SizedBox(height: 22), // Ad
+                                const SizedBox(height: 22), 
                                 ElevatedButton(
                                   onPressed: resetPassword,
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: shadeColor1,
-                                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 99.5), // Adjust padding for size
+                                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 99.5), 
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(44), // Adjust border radius
-                                      side: BorderSide(color: shadeColor1, width: 2), // Border color and width
+                                      borderRadius: BorderRadius.circular(44), 
+                                      side: BorderSide(color: shadeColor1, width: 2), 
                                     ),
-                                    elevation: 5, //shadow
+                                    elevation: 5, 
                                   ),
                                   child: Text(
                                     "Reset Password",
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white), // Text style
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white), 
                                   ),
                                 ),
                               ],
