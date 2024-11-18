@@ -104,7 +104,6 @@ class ContainerWidget extends StatelessWidget {
     DecorationImage? backgroundImage;
 
     if (roomImages.isNotEmpty) {
-      // Assuming you want to use the first image in the list
       String imageUrl = roomImages[0];
       backgroundImage = DecorationImage(
         image: CachedNetworkImageProvider(imageUrl),
@@ -198,7 +197,7 @@ class ContainerWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$numberOfDays days', //no of days based on check-in date & check-out date
+                  '$numberOfDays days', 
                   style: TextStyle(
                     fontSize: 14,
                     color: shadeColor5,
@@ -269,8 +268,6 @@ class ContainerWidget extends StatelessWidget {
               ],
             ),
           ),
-
-
         ],
       ),
     );
@@ -286,8 +283,8 @@ class HorizontalLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 1.0, // Height is 1.0 for a horizontal line
-      width: width, // Adjust the width of the line as needed
+      height: 1.0, 
+      width: width, 
       color: color,
     );
   }
