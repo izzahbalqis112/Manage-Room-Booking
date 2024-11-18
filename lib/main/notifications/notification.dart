@@ -22,7 +22,7 @@ class _NotificationPageState extends State<NotificationPage> {
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
-          textAlign: TextAlign.center, // Centering the text
+          textAlign: TextAlign.center, 
         ),
         centerTitle: true,
         elevation: 0,
@@ -51,11 +51,11 @@ class _NotificationPageState extends State<NotificationPage> {
                     child: Icon(Icons.delete, color: Colors.white),
                   ),
                   onDismissed: (direction) {
-                    var notificationId = _notifications[index].id; // Save notification id before removing from list
+                    var notificationId = _notifications[index].id;
                     setState(() {
                       _notifications.removeAt(index);
                     });
-                    _deleteNotification(notificationId); // Use saved notification id for deletion
+                    _deleteNotification(notificationId);
                   },
                   child: Container(
                     padding: EdgeInsets.all(10),
@@ -73,7 +73,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       ],
                     ),
                     child: ListTile(
-                      contentPadding: EdgeInsets.all(10), // Add padding to ListTile content
+                      contentPadding: EdgeInsets.all(10), 
                       title: Text(
                         notification['title'] ?? 'No title',
                         style: TextStyle(
@@ -131,7 +131,6 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   Future<QuerySnapshot> _fetchNotifications() async {
-    // Query Firestore for notifications based on current user's email
     QuerySnapshot querySnapshot = await _firestore
         .collection('notifications')
         .get();
