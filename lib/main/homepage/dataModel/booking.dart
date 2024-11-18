@@ -28,7 +28,6 @@ class RoomBookingModel {
     required this.cancellationPolicy,
   });
 
-  // Factory constructor to create a BookingModel from Firestore DocumentSnapshot
   factory RoomBookingModel.fromDocument(DocumentSnapshot<Map<String, dynamic>> doc) {
     var data = doc.data()!;
     return RoomBookingModel(
@@ -60,7 +59,6 @@ class RoomBookingModel {
     );
   }
 
-  // Convert RoomBookingModel instance to a JSON map
   Map<String, dynamic> toJson() {
     return {
       'bookingID': bookingID,
