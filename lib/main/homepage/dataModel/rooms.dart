@@ -8,9 +8,9 @@ class RoomsModel {
   final String about;
   final int capacity;
   final RoomStatusModel roomStatus;
-  final double roomPrice; // Changed type to double
+  final double roomPrice; 
   List<String>? roomFacilities;
-  final double roomArea; // Assuming room area is also of type double
+  final double roomArea;
 
   RoomsModel({
     required this.roomID,
@@ -19,9 +19,9 @@ class RoomsModel {
     required this.roomStatus,
     required this.images,
     required this.about,
-    required this.roomPrice, // Changed type to double
+    required this.roomPrice, 
     this.roomFacilities,
-    required this.roomArea, // Assuming room area is also of type double
+    required this.roomArea, 
   });
 
   factory RoomsModel.fromDocument(DocumentSnapshot<Map<String, dynamic>> doc) {
@@ -32,7 +32,7 @@ class RoomsModel {
       about: data['about'] as String,
       capacity: data['capacity'] as int,
       roomStatus: RoomStatusModel.fromDocument(data['roomStatus'] as DocumentSnapshot<Map<String, dynamic>>),
-      roomPrice: (data['roomPrice'] ?? 0.0) as double, // Changed type to double
+      roomPrice: (data['roomPrice'] ?? 0.0) as double, 
       roomFacilities: (data['roomFacilities'] ?? []) as List<String>?,
       roomArea: (data['roomArea'] ?? 0.0) as double,
       images: (data['images'] ?? []) as List<String>,
@@ -46,7 +46,7 @@ class RoomsModel {
       about: json['about'] as String,
       capacity: json['capacity'] as int,
       roomStatus: RoomStatusModel.fromJson(json['roomStatus'] as Map<String, dynamic>),
-      roomPrice: (json['roomPrice'] ?? 0.0) as double, // Changed type to double
+      roomPrice: (json['roomPrice'] ?? 0.0) as double,
       roomFacilities: (json['roomFacilities'] ?? []) as List<String>?,
       roomArea: (json['roomArea'] ?? 0.0) as double,
       images: json['images'] != null ? List<String>.from(json['images'] as List<dynamic>) : [],
