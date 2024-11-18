@@ -32,16 +32,12 @@ class _SearchPageState extends State<SearchPage> {
   Future<List<String>> _getRoomSearchResults(String query) async {
     List<String> results = [];
     String lowercaseQuery = query.toLowerCase();
-
-    // Fetch data from Firebase Firestore
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('roomsData')
         .orderBy('name_lowercase')
         .startAt([lowercaseQuery])
-        .endAt([lowercaseQuery + '\uf8ff']) // Use the lowercase query for start and end conditions
+        .endAt([lowercaseQuery + '\uf8ff']) 
         .get();
-
-    // Iterate through the documents and add room names to the results list
     querySnapshot.docs.forEach((doc) {
       results.add(doc['name']);
     });
@@ -73,7 +69,7 @@ class _SearchPageState extends State<SearchPage> {
             borderRadius: BorderRadius.circular(10),
           ),
           margin: EdgeInsets.symmetric(horizontal: 15),
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10), // Adjust padding to increase container size
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: Row(
             children: <Widget>[
               Padding(
@@ -135,25 +131,21 @@ class _SearchPageState extends State<SearchPage> {
           future: FirebaseFirestore.instance.collection('roomsData').where('name', isEqualTo: roomName).get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // If data is still loading, show a loading indicator
               return CircularProgressIndicator();
             }
             if (snapshot.hasError) {
-              // If an error occurs while fetching data, show an error message
               return Text('Error: ${snapshot.error}');
             }
             if (!snapshot.hasData || snapshot.data == null || snapshot.data!.docs.isEmpty) {
-              // If no data is found or data is null or empty, return an empty container
               return Container();
             }
-            var roomID = snapshot.data!.docs.first.id; // Extract roomID from the fetched document
+            var roomID = snapshot.data!.docs.first.id;
             return ListTile(
               title: Text(
                 roomName,
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18), // Set text color to white
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18), 
               ),
               onTap: () {
-                // Navigate to view selected room data page with roomID
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -178,7 +170,6 @@ class _SearchPageState extends State<SearchPage> {
         elevation: 0,
         leading: IconButton(
           onPressed: (){
-            // Navigate to the previous page
             Navigator.pop(context);
           },
           icon: Icon(Icons.close, color: Colors.white),
