@@ -46,23 +46,18 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
     } catch (error) {
       if (_isMounted) {
         print('Error fetching booking details: $error');
-        // Handle error
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Get roomImages list
     List<dynamic> roomImages = bookingSnapshot?['room']['images'] ?? [];
     var roomName = bookingSnapshot?['room']['name'] ?? '';
     var userFirstName = bookingSnapshot?['user']['firstName'] ?? '';
     var userLastName = bookingSnapshot?['user']['lastName'] ?? '';
     var userPhoneNumber = bookingSnapshot?['user']['phoneNumber'] ?? '';
-
-    // Get the first image URL from the list
     String firstImage = roomImages.isNotEmpty ? roomImages[0] : '';
-
     return Scaffold(
       backgroundColor: shadeColor3,
       appBar: AppBar(
@@ -74,17 +69,6 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
             Navigator.pop(context);
           },
         ),
-        /*
-        actions: [
-          IconButton(
-            icon: Icon(Icons.download, color: Colors.white,),
-            onPressed: () {
-              // Implement download PDF functionality
-            },
-          ),
-        ],
-
-         */
       ),
       body: Stack(
         children: [
@@ -108,10 +92,10 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.3), // Color of the shadow
-                    spreadRadius: 5, // Spread radius
-                    blurRadius: 7, // Blur radius
-                    offset: Offset(0, 3), // Changes position of shadow
+                    color: Colors.grey.withOpacity(0.3), 
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
                   ),
                 ],
               ),
@@ -174,8 +158,8 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
                           padding: EdgeInsets.only(right: 20, top: 10),
                           child: Image.asset(
                             "lib/assets/img/TF-logo1.png",
-                            width: 80.0, // Adjust width as needed
-                            height: 80.0, // Adjust height as needed
+                            width: 80.0,
+                            height: 80.0, 
                           ),
                         ),
                       ],
@@ -228,10 +212,10 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.3), // Color of the shadow
-                          spreadRadius: 5, // Spread radius
-                          blurRadius: 7, // Blur radius
-                          offset: Offset(0, 3), // Changes position of shadow
+                          color: Colors.grey.withOpacity(0.3), 
+                          spreadRadius: 5, 
+                          blurRadius: 7,
+                          offset: Offset(0, 3), 
                         ),
                       ],
                     ),
@@ -242,19 +226,18 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 10,),
-                        // Room Images
                         Stack(
                           children: [
                             Row(
                               children: [
                                 Container(
-                                  height: 100, // Adjust height as needed
+                                  height: 100, 
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
-                                        border: Border.all(color: Colors.white, width: 2), // Adjust the border color and width as needed
+                                        borderRadius: BorderRadius.circular(10), 
+                                        border: Border.all(color: Colors.white, width: 2),
                                       ),
                                       child: CachedNetworkImage(
                                         imageUrl: firstImage,
@@ -267,7 +250,7 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 8), // Add some spacing between the image and text
+                                SizedBox(width: 8), 
                               ],
                             ),
                             Positioned(
@@ -292,9 +275,9 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: shadeColor6,
-                                        borderRadius: BorderRadius.circular(20.0), // Adjust the radius as needed
+                                        borderRadius: BorderRadius.circular(20.0), 
                                       ),
-                                      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0), // Adjust padding as needed
+                                      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0), 
                                       child: Text(
                                         '${bookingSnapshot?['bookingStatus']['bookingStatusID'] ?? ''}',
                                         style: TextStyle(
@@ -376,12 +359,12 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
                                   ),
                                   SizedBox(width: 40),
                                   Container(
-                                    width: 1, // Adjust line width as needed
-                                    height: 20, // Adjust line height as needed
-                                    color: Colors.grey, // Adjust line color as needed
-                                    margin: EdgeInsets.symmetric(horizontal: 10), // Add some margin around the line
-                                  ),// Add
-                                  SizedBox(width: 40),// some space between the texts
+                                    width: 1, 
+                                    height: 20, 
+                                    color: Colors.grey, 
+                                    margin: EdgeInsets.symmetric(horizontal: 10), 
+                                  ),
+                                  SizedBox(width: 40),
                                   Expanded(
                                     child: RichText(
                                       text: TextSpan(
@@ -532,12 +515,12 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
                                   ),
                                   SizedBox(width: 20),
                                   Container(
-                                    width: 1, // Adjust line width as needed
-                                    height: 20, // Adjust line height as needed
-                                    color: Colors.grey, // Adjust line color as needed
-                                    margin: EdgeInsets.symmetric(horizontal: 10), // Add some margin around the line
-                                  ),// Add
-                                  SizedBox(width: 20),// some space between the texts
+                                    width: 1, 
+                                    height: 20,
+                                    color: Colors.grey, 
+                                    margin: EdgeInsets.symmetric(horizontal: 10), 
+                                  ),
+                                  SizedBox(width: 20),
                                   Expanded(
                                     child: RichText(
                                       text: TextSpan(
@@ -582,12 +565,12 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
                                 ),
                               ),
                               SizedBox(height: 5),
-                              Center( // Center the text widget containing the note data
+                              Center( 
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Text(
                                     "${bookingSnapshot?['note'] ?? ''}",
-                                    textAlign: TextAlign.center, // Align the text to the center
+                                    textAlign: TextAlign.center, 
                                     style: TextStyle(
                                       color: shadeColor5,
                                       fontSize: 16,
@@ -598,7 +581,6 @@ class _ViewMoreSelectedBookingIDDetailsPageState extends State<ViewMoreSelectedB
                               ),
                             ],
                           ),
-
                       ],
                     ),
                   ),
@@ -621,8 +603,8 @@ class HorizontalLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 1.0, // Height is 1.0 for a horizontal line
-      width: width, // Adjust the width of the line as needed
+      height: 1.0, 
+      width: width,
       color: color,
     );
   }
