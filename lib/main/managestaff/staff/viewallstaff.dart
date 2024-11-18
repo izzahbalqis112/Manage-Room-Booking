@@ -15,7 +15,7 @@ class ViewAllStaff extends StatefulWidget {
 
 class _ViewAllStaffState extends State<ViewAllStaff> {
   bool _selectAll = false;
-  List<String> _selectedItems = []; // Track selection state for each item
+  List<String> _selectedItems = []; 
   late Future<List<ManagerModel>> _staffData;
 
   @override
@@ -25,10 +25,7 @@ class _ViewAllStaffState extends State<ViewAllStaff> {
   }
 
   Future<List<ManagerModel>> _getStaffData() async {
-    // Fetch staff data from Firestore
     QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('staffAccount').get();
-
-    // Convert each document snapshot to ManagerModel object
     List<ManagerModel> staffList = snapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return ManagerModel(
@@ -46,7 +43,6 @@ class _ViewAllStaffState extends State<ViewAllStaff> {
     return staffList;
   }
 
-  // Method to delete all staff data
   Future<void> _deleteAllStaffData() async {
     try {
       await FirebaseFirestore.instance.collection('staffAccount').get().then((snapshot) {
@@ -55,14 +51,13 @@ class _ViewAllStaffState extends State<ViewAllStaff> {
         }
       });
       setState(() {
-        _staffData = _getStaffData(); // Refresh staff data
+        _staffData = _getStaffData(); 
       });
     } catch (error) {
       print('Error deleting all staff data: $error');
     }
   }
 
-  // Method to delete selected manager ID data
   Future<void> _deleteSelectedManagerData(String managerID, String currentUserEmail) async {
     try {
       DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('staffAccount').doc(managerID).get();
@@ -70,7 +65,6 @@ class _ViewAllStaffState extends State<ViewAllStaff> {
       String managerEmail = data['email'];
 
       if (managerEmail == currentUserEmail) {
-        // If the email matches, skip deletion and display a message or handle it as needed
         print('Current user cannot delete their own profile.');
         return;
       }
@@ -83,12 +77,9 @@ class _ViewAllStaffState extends State<ViewAllStaff> {
       });
     } catch (error) {
       print('Error deleting selected manager data: $error');
-      // Handle error as needed
     }
   }
 
-
-  // Method to toggle selection of all manager IDs
   void _toggleSelectAll(bool value, List<ManagerModel> staffList) {
     setState(() {
       _selectAll = value;
@@ -100,7 +91,6 @@ class _ViewAllStaffState extends State<ViewAllStaff> {
     });
   }
 
-  // Method to show a pop-up message
   void _showSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -134,7 +124,7 @@ class _ViewAllStaffState extends State<ViewAllStaff> {
             child: IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                Navigator.pop(context); // Navigate to the previous page
+                Navigator.pop(context);
               },
             ),
           ),
@@ -254,13 +244,13 @@ class _ViewAllStaffState extends State<ViewAllStaff> {
                                       }
                                     });
                                   },
-                                  checkColor: Colors.white, // Color of the check mark
+                                  checkColor: Colors.white,
                                   fillColor: MaterialStateProperty.resolveWith<Color>(
                                         (Set<MaterialState> states) {
                                       if (states.contains(MaterialState.selected)) {
-                                        return shadeColor2; // Background color when checked
+                                        return shadeColor2; 
                                       }
-                                      return Colors.transparent; // Background color when unchecked
+                                      return Colors.transparent; 
                                     },
                                   ),
                                 ),
@@ -314,19 +304,16 @@ class _ViewAllStaffState extends State<ViewAllStaff> {
                           fontSize: 16.0,
                         );
                       } else {
-                        // If specific items are selected, edit only the selected staff data
                         for (String managerID in _selectedItems) {
-                          // Navigate to the EditSelectedManagerData page with the selected manager ID
                           final result = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => EditSelectedStaffData(managerID: managerID),
                             ),
                           );
-                          // Check if the edit was successful and reload the staff data
                           if (result == true) {
                             setState(() {
-                              _staffData = _getStaffData(); // Refresh staff data
+                              _staffData = _getStaffData(); 
                             });
                           }
                         }
@@ -341,15 +328,12 @@ class _ViewAllStaffState extends State<ViewAllStaff> {
                   TextButton(
                     onPressed: () async {
                       if (_selectAll) {
-                        // If "Select All" is checked, delete all staff data
                         await _deleteAllStaffData();
                       } else {
-                        // If specific items are selected, delete only the selected staff data
                         for (String managerID in _selectedItems) {
                           await _deleteSelectedManagerData(managerID, FirebaseAuth.instance.currentUser!.email!);
                         }
                       }
-                      // After deletion, refresh the staff data
                       setState(() {
                         _staffData = _getStaffData();
                       });
@@ -374,16 +358,15 @@ class _ViewAllStaffState extends State<ViewAllStaff> {
         child: FloatingActionButton(
           backgroundColor: shadeColor2,
           onPressed: () async {
-            // Navigate to the AddNewStaffPage and wait for the result
             final result = await Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => AddNewStaffPage()),
             );
             if (result == true) {
               setState(() {
-                _staffData = _getStaffData(); // Refresh staff data if new staff added
+                _staffData = _getStaffData();
               });
-              _showSuccessDialog(context); // Show success dialog
+              _showSuccessDialog(context); 
             }
           },
           child: Icon(
