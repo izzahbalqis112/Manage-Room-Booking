@@ -13,7 +13,6 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  // Text controllers
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _utemStaffIDController = TextEditingController();
@@ -61,7 +60,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         setState(() {
           _managerProfileData = userData;
           _isLoading = false;
-          // Set the initial values of the text controllers
           _firstNameController.text = _managerProfileData?['firstName'] ?? '';
           _lastNameController.text = _managerProfileData?['lastName'] ?? '';
           _utemStaffIDController.text = _managerProfileData?['utemStaffID'] ?? '';
