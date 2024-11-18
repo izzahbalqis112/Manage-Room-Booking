@@ -33,7 +33,7 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
   File? _selectedImage;
   bool _isUploading = false;
   String? _photoUrl;
-  String managerID = Uuid().v4(); // Generate managerID
+  String managerID = Uuid().v4(); 
 
   @override
   void initState() {
@@ -41,7 +41,6 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
   }
 
   bool _validateEmail(String email) {
-    // Regular expressions for the accepted email formats
     final RegExp googleEmail =
     RegExp(r'^[\w.+-]+@gmail\.com$', caseSensitive: false);
     final RegExp utemEmail =
@@ -51,14 +50,13 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
     final RegExp yahooEmail =
     RegExp(r'^[\w.+-]+@yahoo\.com$', caseSensitive: false);
 
-    // Check if the email matches any of the accepted formats
     if (googleEmail.hasMatch(email) ||
         utemEmail.hasMatch(email) ||
         outlookEmail.hasMatch(email) ||
         yahooEmail.hasMatch(email)) {
-      return true; // Email is valid
+      return true; 
     } else {
-      return false; // Email is invalid
+      return false; 
     }
   }
 
@@ -69,14 +67,11 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
   }
 
   bool _validatePassword(String password) {
-    // Check if password length is at least 6 characters
     if (password.length < 6) {
       return false;
     }
 
-    // Check for at least one uppercase letter
     bool hasUpperCase = false;
-    // Count the number of uppercase letters
     int upperCaseCount = 0;
     for (int i = 0; i < password.length; i++) {
       if (password[i] == password[i].toUpperCase() && password[i] != password[i].toLowerCase()) {
@@ -85,9 +80,7 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
       }
     }
 
-    // Check for at least one lowercase letter
     bool hasLowerCase = false;
-    // Count the number of lowercase letters
     int lowerCaseCount = 0;
     for (int i = 0; i < password.length; i++) {
       if (password[i] == password[i].toLowerCase() && password[i] != password[i].toUpperCase()) {
@@ -96,7 +89,6 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
       }
     }
 
-    // Check for at least one special character
     bool hasSpecialChar = false;
     String specialChars = r'^ !@#$%^&*()_+{}|:<>?-=[]\;\';
     for (int i = 0; i < password.length; i++) {
@@ -106,15 +98,13 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
       }
     }
 
-    // Return true only if all conditions are met
-    // And if the desired count of uppercase and lowercase letters is achieved
     return hasUpperCase && hasLowerCase && hasSpecialChar && upperCaseCount >= 1 && lowerCaseCount >= 1;
   }
 
   String hashPassword(String password) {
-    var bytes = utf8.encode(password); // Encode the password to UTF-8
-    var digest = sha256.convert(bytes); // Generate the SHA-256 hash
-    return digest.toString(); // Return the hashed password as a string
+    var bytes = utf8.encode(password); 
+    var digest = sha256.convert(bytes); 
+    return digest.toString(); 
   }
 
   bool _validateFirstName(String value) {
@@ -122,12 +112,9 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
   }
 
   bool _validateUtemStaffID(String value) {
-    // Check if the value is empty
     if (value.isEmpty) {
       return false;
     }
-
-    // Check if the value contains at least one lowercase letter
     bool hasLowerCase = false;
     for (int i = 0; i < value.length; i++) {
       if (value[i] == value[i].toLowerCase() && value[i] != value[i].toUpperCase()) {
@@ -135,8 +122,6 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
         break;
       }
     }
-
-    // Check if the value contains at least one digit (number)
     bool hasNumber = false;
     for (int i = 0; i < value.length; i++) {
       if (value.codeUnitAt(i) >= 48 && value.codeUnitAt(i) <= 57) {
@@ -144,8 +129,6 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
         break;
       }
     }
-
-    // Return true only if both conditions are met
     return hasLowerCase && hasNumber;
   }
 
@@ -176,9 +159,9 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
 
     final Reference storageRef = FirebaseStorage.instance
         .ref()
-        .child('managerProfilePhotos') // The directory name in Firebase Storage
-        .child(managerID) // Use managerID as the directory name
-        .child('$managerID.jpg'); // The image file name
+        .child('managerProfilePhotos') 
+        .child(managerID) 
+        .child('$managerID.jpg');
 
     final UploadTask uploadTask = storageRef.putFile(_selectedImage!);
 
@@ -191,7 +174,7 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
 
     setState(() {
       _isUploading = false;
-      _photoUrl = downloadUrl; // Update _photoUrl with the download URL
+      _photoUrl = downloadUrl; 
     });
 
     return downloadUrl;
@@ -207,19 +190,17 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
 
       String hashedPassword = hashPassword(_passwordController.text);
 
-      // Create ManagerModel object
       ManagerModel managerModel = ManagerModel(
         firstName: _firstNameController.text,
         lastName: _lastNameController.text,
         email: _emailController.text,
-        password: hashedPassword, // Hash the password
-        managerID: managerID, // Use the user ID as the managerID
+        password: hashedPassword, 
+        managerID: managerID,
         picture: _photoUrl,
         utemStaffID: _utemStaffIDController.text,
-        role: _selectedRole ?? '', // Assign converted UserRole
+        role: _selectedRole ?? '',
       );
 
-      // Define user profile data
       Map<String, dynamic> staffProfileData = {
         'firstName': managerModel.firstName,
         'lastName': managerModel.lastName,
@@ -228,24 +209,19 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
         'managerID': managerModel.managerID,
         'picture': managerModel.picture,
         'utemStaffID': managerModel.utemStaffID,
-        'role': managerModel.role.toString().split('.').last, // Convert enum back to string for Firestore
+        'role': managerModel.role.toString().split('.').last, 
       };
 
-      // Determine collection name based on role
       String collectionName = '';
       if (managerModel.role == 'Manager') {
         collectionName = 'managersAccount';
       } else if (managerModel.role == 'Staff') {
         collectionName = 'staffAccount';
-      } // Add more conditions for other roles if needed
+      } 
 
-      // Save user data to Firestore with the determined collection name
       await _firestore.collection(collectionName).doc(managerModel.managerID).set(staffProfileData);
-
-      // Navigate back
       Navigator.pop(context, true);
     } catch (e) {
-      // Handle any errors that occur during user account creation or Firestore data saving
       print('Error creating user account or saving data to Firestore: $e');
       Fluttertoast.showToast(
         msg: 'Error: $e',
@@ -304,7 +280,7 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
                                     44),
                                 side: BorderSide(
                                     color: shadeColor2,
-                                    width: 2), // Border color and width
+                                    width: 2), 
                               ),
                             ),
                             onPressed: _saveUserDetails,
@@ -506,7 +482,6 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
                                           filled: true,
                                         ),
                                         onChanged: (value) {
-                                          // No validation needed for last name
                                         },
                                         keyboardType: TextInputType.text,
                                         inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
@@ -573,7 +548,6 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
     );
   }
 
-  // Implement round tick buttons for selecting the role
   Widget _buildRoleSelection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -606,7 +580,7 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
                 ),
                 child: _selectedRole == 'Manager'
                     ? Icon(Icons.check, size: 18, color: Colors.white)
-                    : SizedBox(), // Show check icon if role is selected
+                    : SizedBox(), 
               ),
             ),
             SizedBox(width: 10),
@@ -624,7 +598,7 @@ class _AddNewStaffPageState extends State<AddNewStaffPage> {
                 ),
                 child: _selectedRole == 'Staff'
                     ? Icon(Icons.check, size: 18, color: Colors.white)
-                    : SizedBox(), // Show check icon if role is selected
+                    : SizedBox(), 
               ),
             ),
             SizedBox(width: 10),
