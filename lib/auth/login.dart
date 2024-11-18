@@ -1,16 +1,13 @@
 import 'dart:convert';
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-//import 'package:uuid/uuid.dart';
 import '../Assets/Colors.dart';
 import '../firstpage.dart';
 import '../main/bottomnavbar/navbar.dart';
-//import '../managerModel.dart';
 import 'forgotpass.dart';
 
 class Login extends StatefulWidget {
@@ -21,15 +18,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  //text controllers
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isEmailValid = true;
   bool _passwordVisible = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  //final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool _validateEmail(String email) {
-    // Regular expressions for the accepted email formats
     final RegExp googleEmail =
     RegExp(r'^[\w.+-]+@gmail\.com$', caseSensitive: false);
     final RegExp utemEmail =
@@ -39,14 +33,13 @@ class _LoginState extends State<Login> {
     final RegExp yahooEmail =
     RegExp(r'^[\w.+-]+@yahoo\.com$', caseSensitive: false);
 
-    // Check if the email matches any of the accepted formats
     if (googleEmail.hasMatch(email) ||
         utemEmail.hasMatch(email) ||
         outlookEmail.hasMatch(email) ||
         yahooEmail.hasMatch(email)) {
-      return true; // Email is valid
+      return true; 
     } else {
-      return false; // Email is invalid
+      return false; 
     }
   }
 
@@ -56,11 +49,10 @@ class _LoginState extends State<Login> {
     });
   }
 
-  // Function to hash a password using SHA-256 algorithm
   String hashPassword(String password) {
-    var bytes = utf8.encode(password); // Encode the password to UTF-8
-    var digest = sha256.convert(bytes); // Generate the SHA-256 hash
-    return digest.toString(); // Return the hashed password as a string
+    var bytes = utf8.encode(password); 
+    var digest = sha256.convert(bytes); 
+    return digest.toString(); 
   }
 
   void _login() async {
@@ -73,16 +65,15 @@ class _LoginState extends State<Login> {
       /*
       String hashedPassword = hashPassword(_passwordController.text);
       String managerID = Uuid().v4();
-      // Create ManagerModel object
       ManagerModel managerModel = ManagerModel(
         firstName: 'Admin',
         lastName: 'TF',
         email: _emailController.text,
-        password: hashedPassword, // Hash the password
+        password: hashedPassword, 
         managerID: managerID,
         picture: '',
         utemStaffID: '',
-        role: '', // Assign converted UserRole
+        role: '', 
       );
       // Define user profile data
       Map<String, dynamic> staffProfileData = {
@@ -93,40 +84,33 @@ class _LoginState extends State<Login> {
         'managerID': managerModel.managerID,
         'picture': managerModel.picture,
         'utemStaffID': managerModel.utemStaffID,
-        'role': managerModel.role.toString().split('.').last, // Convert enum back to string for Firestore
+        'role': managerModel.role.toString().split('.').last, 
       };
 
-      // Save user data to Firestore with the user ID as the document ID
       await _firestore.collection('managersAccount').doc(managerModel.managerID).set(staffProfileData);
        */
       User? manager = managerCredential.user;
 
-      // Fetch manager's email from Firestore
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('managersAccount')
           .where('email', isEqualTo: _emailController.text)
           .get();
 
-      // Check if manager email exists in the collection
       if (querySnapshot.docs.isNotEmpty) {
         String managerEmail = querySnapshot.docs.first.get('email');
 
-        // Check if the logged-in user's email matches the manager's email
         if (manager?.email == _emailController.text && _emailController.text == managerEmail) {
-          // Login successful, navigate to home screen
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ButtomNavBar()),
           );
         } else {
-          // User is not authorized, show error message
           Fluttertoast.showToast(
             msg: 'You are not authorized to log in',
             gravity: ToastGravity.BOTTOM,
           );
         }
       } else {
-        // Manager email not found in the collection
         Fluttertoast.showToast(
           msg: 'You are not authorized to log in',
           gravity: ToastGravity.BOTTOM,
@@ -152,7 +136,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading:
-        false, // Set this to false to hide the back button
+        false,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_rounded, color: shadeColor5),
           onPressed: () {
@@ -176,13 +160,13 @@ class _LoginState extends State<Login> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 40.0), // Adjust the left padding as needed
+                    left: 40.0), 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
                         height:
-                        60), // Adjust the space between "Teaching Factory" and the new text
+                        60), 
                     Text(
                       "Log in into your Account",
                       style: TextStyle(
@@ -191,10 +175,10 @@ class _LoginState extends State<Login> {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    const SizedBox(height: 20), // Add space below the text
+                    const SizedBox(height: 20),
                     Container(
-                      padding: EdgeInsets.only(left: 0.05), // Adjust the left padding for center-left alignment
-                      width: MediaQuery.of(context).size.width - 80, // Adjust width as needed
+                      padding: EdgeInsets.only(left: 0.05),
+                      width: MediaQuery.of(context).size.width - 80,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -211,7 +195,7 @@ class _LoginState extends State<Login> {
                                         color: _isEmailValid
                                             ? shadeColor1
                                             : Colors
-                                            .red, // Dynamic border color based on email validity
+                                            .red, 
                                       ),
                                     ),
                                     focusedBorder: OutlineInputBorder(
@@ -219,7 +203,7 @@ class _LoginState extends State<Login> {
                                         color: _isEmailValid
                                             ? shadeColor1
                                             : Colors
-                                            .red, // Dynamic border color based on email validity
+                                            .red,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
@@ -246,19 +230,19 @@ class _LoginState extends State<Login> {
                             Padding(
                               padding: const EdgeInsets.only(
                                   left: 10.0,
-                                  top: 5.0), // Adjust padding as needed
+                                  top: 5.0),
                               child: Text(
                                 'Invalid email format',
                                 style: TextStyle(
-                                  color: Colors.red, // Adjust color as needed
-                                  fontSize: 12, // Adjust font size as needed
+                                  color: Colors.red,
+                                  fontSize: 12,
                                 ),
                               ),
                             ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12), // Add space below the text
+                    const SizedBox(height: 12),
                     Container(
                       padding: EdgeInsets.only(left: 0.05),
                       width: MediaQuery.of(context).size.width - 80,
@@ -323,7 +307,7 @@ class _LoginState extends State<Login> {
                                   "Forgot Password?",
                                   style: TextStyle(
                                     color:
-                                    shadeColor2, // You can adjust the color as needed
+                                    shadeColor2,
                                   ),
                                 ),
                               ),
@@ -332,22 +316,22 @@ class _LoginState extends State<Login> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              const SizedBox(height: 5), // Ad
+                              const SizedBox(height: 5),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: shadeColor1,
                                   padding: EdgeInsets.symmetric(
                                       vertical: 16,
                                       horizontal:
-                                      134), // Adjust padding for size
+                                      134), 
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
                                         44),
                                     side: BorderSide(
                                         color: shadeColor1,
-                                        width: 2), // Border color and width
+                                        width: 2), 
                                   ),
-                                  elevation: 5, //shadow
+                                  elevation: 5, 
                                 ),
                                 onPressed: _login,
                                 child: Text(
@@ -355,7 +339,7 @@ class _LoginState extends State<Login> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      color: Colors.white), // Text style
+                                      color: Colors.white),
                                 ),
                               ),
                             ],
